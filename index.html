@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Team Hiring Planner | B2B SaaS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #7c3aed;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Wizard Styles */
+        .wizard-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .wizard-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gray-200);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .progress-step {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-500);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .wizard-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .wizard-subtitle {
+            font-size: 16px;
+            color: var(--gray-500);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-select, .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+            background: white;
+        }
+
+        .form-select:focus, .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 6px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            gap: 16px;
+        }
+
+        .wizard-actions .btn {
+            flex: 1;
+        }
+
+        /* Welcome Screen */
+        .welcome-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .welcome-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .feature-list {
+            margin: 24px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-icon svg {
+            width: 14px;
+            height: 14px;
+            color: var(--primary);
+        }
+
+        .feature-text {
+            font-size: 15px;
+            color: var(--gray-600);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .dashboard-subtitle {
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Input Panel */
+        .input-panel {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .input-panel .form-group {
+            margin-bottom: 16px;
+        }
+
+        .input-panel .form-select {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        /* Scenario Toggle */
+        .scenario-toggle {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .scenario-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        /* Results Panel */
+        .results-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 20px 0;
+            overflow-x: auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gray-200);
+        }
+
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            min-width: 140px;
+            cursor: pointer;
+        }
+
+        .timeline-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+
+        .timeline-marker.future {
+            background: var(--gray-300);
+            box-shadow: 0 0 0 3px var(--gray-300);
+        }
+
+        .timeline-content {
+            text-align: center;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            width: 130px;
+        }
+
+        .timeline-item:hover .timeline-content {
+            background: var(--primary-light);
+        }
+
+        .timeline-role {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .timeline-salary {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Role Cards */
+        .role-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .role-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .role-card:hover {
+            border-color: var(--primary);
+        }
+
+        .role-card-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .role-card-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .role-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .role-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--gray-900);
+        }
+
+        .role-seniority {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .role-salary-badge {
+            background: var(--success);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .role-card-expand {
+            color: var(--gray-400);
+            transition: transform 0.2s ease;
+        }
+
+        .role-card.expanded .role-card-expand {
+            transform: rotate(180deg);
+        }
+
+        .role-card-body {
+            display: none;
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .role-card.expanded .role-card-body {
+            display: block;
+        }
+
+        .role-section {
+            margin-top: 20px;
+        }
+
+        .role-section-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+        }
+
+        .role-why {
+            background: var(--primary-light);
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        .jobs-list {
+            list-style: none;
+        }
+
+        .jobs-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 14px;
+            color: var(--gray-600);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .jobs-list li:last-child {
+            border-bottom: none;
+        }
+
+        .jobs-list li::before {
+            content: '\2022';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .jd-container {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 13px;
+            color: var(--gray-700);
+            white-space: pre-wrap;
+        }
+
+        .copy-btn {
+            margin-top: 12px;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        /* Budget Calculator */
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .budget-table th, .budget-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .budget-table th {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            font-weight: 600;
+        }
+
+        .budget-table td {
+            font-size: 14px;
+        }
+
+        .budget-table .total-row {
+            background: var(--gray-50);
+            font-weight: 700;
+        }
+
+        .budget-table .subtotal-row td {
+            border-top: 2px solid var(--gray-300);
+            font-weight: 600;
+        }
+
+        .budget-table .grand-total td {
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+        }
+
+        .budget-amount {
+            text-align: right;
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        /* Scenario Comparison */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .comparison-card:hover {
+            border-color: var(--primary);
+        }
+
+        .comparison-card.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .comparison-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .comparison-subtitle {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-bottom: 16px;
+        }
+
+        .comparison-stat {
+            margin-bottom: 12px;
+        }
+
+        .comparison-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .comparison-stat-label {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Export Section */
+        .export-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .export-btn:hover {
+            background: var(--gray-200);
+        }
+
+        .export-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--gray-900);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 640px) {
+            .wizard-container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+
+            .wizard-card {
+                padding: 24px;
+            }
+
+            .wizard-title {
+                font-size: 24px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-panel {
+                position: static;
+            }
+
+            .timeline {
+                padding-bottom: 20px;
+            }
+
+            .timeline-item {
+                min-width: 120px;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .export-buttons {
+                flex-direction: column;
+            }
+
+            .export-btn {
+                justify-content: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .input-panel, .export-buttons, .scenario-toggle {
+                display: none !important;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid var(--gray-200);
+            }
+
+            .role-card.expanded .role-card-body {
+                display: block;
+            }
+        }
+
+        /* Hidden utility */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Wizard Container -->
+    <div class="wizard-container" id="wizard">
+        <!-- Screen 0: Welcome -->
+        <div class="wizard-card wizard-screen active" data-screen="0">
+            <div class="welcome-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+            </div>
+            <h1 class="wizard-title">Marketing Team Hiring Planner</h1>
+            <p class="wizard-subtitle">Get your personalized marketing hiring plan in 60 seconds</p>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <span class="feature-text">Learn who to hire first based on your GTM motion</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <span class="feature-text">Get salary benchmarks by role and location</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <span class="feature-text">Build a 12-month hiring roadmap with budget</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <span class="feature-text">Download job descriptions and budget spreadsheets</span>
+                </div>
+            </div>
+
+            <div class="wizard-actions">
+                <button class="btn btn-primary" onclick="nextScreen()">Get Started</button>
+            </div>
+        </div>
+
+        <!-- Screen 1: Company Info -->
+        <div class="wizard-card wizard-screen" data-screen="1">
+            <div class="progress-bar">
+                <div class="progress-step active">1</div>
+                <div class="progress-step">2</div>
+                <div class="progress-step">3</div>
+                <div class="progress-step">4</div>
+            </div>
+
+            <h2 class="wizard-title">Company Info</h2>
+            <p class="wizard-subtitle">Tell us about your company to personalize recommendations</p>
+
+            <div class="form-group">
+                <label class="form-label">Average Contract Value (ACV)</label>
+                <select class="form-select" id="acv">
+                    <option value="">Select ACV range...</option>
+                    <option value="<10k">Less than $10K</option>
+                    <option value="10-50k">$10K - $50K</option>
+                    <option value="50-100k">$50K - $100K</option>
+                    <option value="100k+">$100K+</option>
+                </select>
+                <p class="form-hint">Your typical deal size determines GTM strategy</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Funding Stage</label>
+                <select class="form-select" id="funding">
+                    <option value="">Select funding stage...</option>
+                    <option value="seed">Seed ($1-5M raised)</option>
+                    <option value="seriesA">Series A ($5-20M raised)</option>
+                    <option value="seriesB">Series B ($20-60M raised)</option>
+                    <option value="seriesC+">Series C+ ($60M+ raised)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Current ARR</label>
+                <select class="form-select" id="currentArr">
+                    <option value="">Select current ARR...</option>
+                    <option value="0-500k">$0 - $500K</option>
+                    <option value="500k-1m">$500K - $1M</option>
+                    <option value="1-5m">$1M - $5M</option>
+                    <option value="5-10m">$5M - $10M</option>
+                    <option value="10m+">$10M+</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Target ARR in 12 Months</label>
+                <select class="form-select" id="targetArr">
+                    <option value="">Select target ARR...</option>
+                    <option value="500k-1m">$500K - $1M</option>
+                    <option value="1-3m">$1M - $3M</option>
+                    <option value="3-5m">$3M - $5M</option>
+                    <option value="5-10m">$5M - $10M</option>
+                    <option value="10-20m">$10M - $20M</option>
+                    <option value="20m+">$20M+</option>
+                </select>
+            </div>
+
+            <div class="wizard-actions">
+                <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                <button class="btn btn-primary" onclick="nextScreen()">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Sales & GTM Context -->
+        <div class="wizard-card wizard-screen" data-screen="2">
+            <div class="progress-bar">
+                <div class="progress-step completed">1</div>
+                <div class="progress-step active">2</div>
+                <div class="progress-step">3</div>
+                <div class="progress-step">4</div>
+            </div>
+
+            <h2 class="wizard-title">Sales & GTM Context</h2>
+            <p class="wizard-subtitle">Help us understand your current go-to-market setup</p>
+
+            <div class="form-group">
+                <label class="form-label">Current Sales Team Size</label>
+                <select class="form-select" id="salesTeam">
+                    <option value="">Select team size...</option>
+                    <option value="0">No sales team yet</option>
+                    <option value="1-3">1-3 salespeople</option>
+                    <option value="4-10">4-10 salespeople</option>
+                    <option value="10+">10+ salespeople</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Primary GTM Motion</label>
+                <select class="form-select" id="gtmMotion">
+                    <option value="">Select GTM motion...</option>
+                    <option value="plg">Product-led (self-serve, freemium)</option>
+                    <option value="sales-smb">Sales-led SMB (AEs closing &lt;$25K deals)</option>
+                    <option value="sales-enterprise">Sales-led Enterprise ($50K+ deals, long cycles)</option>
+                    <option value="hybrid">Hybrid (PLG + Sales assist)</option>
+                </select>
+                <p class="form-hint">This significantly impacts which roles you need first</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Current Marketing Team Size</label>
+                <select class="form-select" id="marketingTeam">
+                    <option value="">Select team size...</option>
+                    <option value="0">No marketing team yet</option>
+                    <option value="1">1 marketer (likely generalist)</option>
+                    <option value="2-3">2-3 marketers</option>
+                    <option value="4+">4+ marketers</option>
+                </select>
+            </div>
+
+            <div class="wizard-actions">
+                <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                <button class="btn btn-primary" onclick="nextScreen()">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Priorities -->
+        <div class="wizard-card wizard-screen" data-screen="3">
+            <div class="progress-bar">
+                <div class="progress-step completed">1</div>
+                <div class="progress-step completed">2</div>
+                <div class="progress-step active">3</div>
+                <div class="progress-step">4</div>
+            </div>
+
+            <h2 class="wizard-title">Current Priorities</h2>
+            <p class="wizard-subtitle">What's the biggest gap in your marketing today?</p>
+
+            <div class="form-group">
+                <label class="form-label">Biggest Current Gap</label>
+                <select class="form-select" id="biggestGap">
+                    <option value="">Select your biggest gap...</option>
+                    <option value="pipeline">Pipeline / Lead Generation - Not enough qualified leads</option>
+                    <option value="positioning">Positioning / Messaging - Unclear value prop or differentiation</option>
+                    <option value="content">Content - Need more blogs, case studies, sales collateral</option>
+                    <option value="ops">Marketing Ops - Tech stack chaos, no attribution, manual processes</option>
+                    <option value="awareness">Brand Awareness - Target market doesn't know we exist</option>
+                </select>
+                <p class="form-hint">We'll prioritize hires that address this gap first</p>
+            </div>
+
+            <div class="wizard-actions">
+                <button class="btn btn-secondary" onclick="prevScreen()">Back</button>
+                <button class="btn btn-primary" onclick="nextScreen()">See My Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="container dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Your Marketing Hiring Plan</h1>
+            <p class="dashboard-subtitle">Personalized recommendations based on your inputs</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Input Panel (Left) -->
+            <div class="input-panel">
+                <h3 class="panel-title">Adjust Your Inputs</h3>
+
+                <div class="scenario-toggle">
+                    <button class="scenario-btn" data-scenario="conservative">Conservative</button>
+                    <button class="scenario-btn active" data-scenario="balanced">Balanced</button>
+                    <button class="scenario-btn" data-scenario="aggressive">Aggressive</button>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Location (for salaries)</label>
+                    <select class="form-select" id="location" onchange="updateDashboard()">
+                        <option value="sf">SF Bay Area</option>
+                        <option value="nyc">New York City</option>
+                        <option value="us-other" selected>US Other</option>
+                        <option value="europe">Europe</option>
+                        <option value="remote">Remote / Global</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ACV</label>
+                    <select class="form-select" id="dash-acv" onchange="updateDashboard()">
+                        <option value="<10k">Less than $10K</option>
+                        <option value="10-50k">$10K - $50K</option>
+                        <option value="50-100k">$50K - $100K</option>
+                        <option value="100k+">$100K+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Funding Stage</label>
+                    <select class="form-select" id="dash-funding" onchange="updateDashboard()">
+                        <option value="seed">Seed</option>
+                        <option value="seriesA">Series A</option>
+                        <option value="seriesB">Series B</option>
+                        <option value="seriesC+">Series C+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">GTM Motion</label>
+                    <select class="form-select" id="dash-gtm" onchange="updateDashboard()">
+                        <option value="plg">Product-led</option>
+                        <option value="sales-smb">Sales-led SMB</option>
+                        <option value="sales-enterprise">Sales-led Enterprise</option>
+                        <option value="hybrid">Hybrid</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Marketing Team Size</label>
+                    <select class="form-select" id="dash-team" onchange="updateDashboard()">
+                        <option value="0">No team yet</option>
+                        <option value="1">1 marketer</option>
+                        <option value="2-3">2-3 marketers</option>
+                        <option value="4+">4+ marketers</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Biggest Gap</label>
+                    <select class="form-select" id="dash-gap" onchange="updateDashboard()">
+                        <option value="pipeline">Pipeline</option>
+                        <option value="positioning">Positioning</option>
+                        <option value="content">Content</option>
+                        <option value="ops">Marketing Ops</option>
+                        <option value="awareness">Brand Awareness</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-outline" style="width: 100%; margin-top: 12px;" onclick="restartWizard()">
+                    Start Over
+                </button>
+            </div>
+
+            <!-- Results Panel (Right) -->
+            <div class="results-panel">
+                <!-- Hiring Timeline -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <h3 class="card-title">12-Month Hiring Roadmap</h3>
+                    </div>
+                    <div class="timeline" id="timeline">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Role Cards -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recommended Hires</h3>
+                    </div>
+                    <div class="role-cards" id="roleCards">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Budget Calculator -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <h3 class="card-title">12-Month Budget Projection</h3>
+                    </div>
+                    <table class="budget-table" id="budgetTable">
+                        <!-- Populated by JS -->
+                    </table>
+                </div>
+
+                <!-- Scenario Comparison -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Scenario Comparison</h3>
+                    </div>
+                    <div class="comparison-grid" id="comparisonGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Export Your Plan</h3>
+                    </div>
+                    <div class="export-buttons">
+                        <button class="export-btn" onclick="exportPDF()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            Export as PDF
+                        </button>
+                        <button class="export-btn" onclick="exportCSV()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Export Budget CSV
+                        </button>
+                        <button class="export-btn" onclick="copyAllJDs()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                            </svg>
+                            Copy All Job Descriptions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ===== DATA STRUCTURES =====
+
+        // Salary data by role, seniority, and location
+        const salaryData = {
+            'demand-gen': {
+                junior: { sf: 85000, nyc: 80000, 'us-other': 70000, europe: 55000, remote: 65000 },
+                mid: { sf: 120000, nyc: 115000, 'us-other': 95000, europe: 70000, remote: 90000 },
+                senior: { sf: 155000, nyc: 150000, 'us-other': 130000, europe: 95000, remote: 120000 },
+                director: { sf: 190000, nyc: 185000, 'us-other': 160000, europe: 120000, remote: 150000 }
+            },
+            'pmm': {
+                junior: { sf: 95000, nyc: 90000, 'us-other': 80000, europe: 60000, remote: 75000 },
+                mid: { sf: 135000, nyc: 130000, 'us-other': 110000, europe: 80000, remote: 105000 },
+                senior: { sf: 175000, nyc: 165000, 'us-other': 145000, europe: 105000, remote: 135000 },
+                director: { sf: 210000, nyc: 200000, 'us-other': 175000, europe: 130000, remote: 165000 }
+            },
+            'content': {
+                junior: { sf: 80000, nyc: 75000, 'us-other': 65000, europe: 48000, remote: 60000 },
+                mid: { sf: 105000, nyc: 100000, 'us-other': 85000, europe: 60000, remote: 80000 },
+                senior: { sf: 140000, nyc: 130000, 'us-other': 115000, europe: 85000, remote: 105000 },
+                director: { sf: 170000, nyc: 160000, 'us-other': 140000, europe: 105000, remote: 130000 }
+            },
+            'marketing-ops': {
+                junior: { sf: 90000, nyc: 85000, 'us-other': 75000, europe: 58000, remote: 70000 },
+                mid: { sf: 125000, nyc: 120000, 'us-other': 100000, europe: 75000, remote: 95000 },
+                senior: { sf: 160000, nyc: 155000, 'us-other': 135000, europe: 100000, remote: 125000 },
+                director: { sf: 195000, nyc: 185000, 'us-other': 165000, europe: 120000, remote: 155000 }
+            },
+            'events': {
+                junior: { sf: 75000, nyc: 70000, 'us-other': 60000, europe: 45000, remote: 55000 },
+                mid: { sf: 95000, nyc: 90000, 'us-other': 80000, europe: 55000, remote: 75000 },
+                senior: { sf: 130000, nyc: 125000, 'us-other': 110000, europe: 80000, remote: 100000 },
+                director: { sf: 165000, nyc: 155000, 'us-other': 140000, europe: 100000, remote: 130000 }
+            },
+            'growth': {
+                junior: { sf: 90000, nyc: 85000, 'us-other': 75000, europe: 55000, remote: 70000 },
+                mid: { sf: 125000, nyc: 120000, 'us-other': 100000, europe: 75000, remote: 95000 },
+                senior: { sf: 160000, nyc: 155000, 'us-other': 135000, europe: 100000, remote: 125000 },
+                director: { sf: 195000, nyc: 185000, 'us-other': 165000, europe: 120000, remote: 155000 }
+            },
+            'head-of-marketing': {
+                senior: { sf: 200000, nyc: 190000, 'us-other': 165000, europe: 120000, remote: 155000 },
+                director: { sf: 250000, nyc: 240000, 'us-other': 210000, europe: 160000, remote: 195000 }
+            },
+            'abm': {
+                junior: { sf: 85000, nyc: 80000, 'us-other': 70000, europe: 52000, remote: 65000 },
+                mid: { sf: 115000, nyc: 110000, 'us-other': 95000, europe: 70000, remote: 90000 },
+                senior: { sf: 150000, nyc: 145000, 'us-other': 125000, europe: 90000, remote: 115000 },
+                director: { sf: 185000, nyc: 175000, 'us-other': 155000, europe: 115000, remote: 145000 }
+            },
+            'field-marketing': {
+                junior: { sf: 75000, nyc: 70000, 'us-other': 62000, europe: 48000, remote: 58000 },
+                mid: { sf: 100000, nyc: 95000, 'us-other': 85000, europe: 62000, remote: 80000 },
+                senior: { sf: 135000, nyc: 130000, 'us-other': 115000, europe: 85000, remote: 105000 },
+                director: { sf: 170000, nyc: 160000, 'us-other': 145000, europe: 105000, remote: 135000 }
+            }
+        };
+
+        // Role display information
+        const roleInfo = {
+            'head-of-marketing': {
+                title: 'Head of Marketing / VP',
+                shortTitle: 'Head of Mkt',
+                description: 'Senior generalist who can build and lead the marketing function from scratch.',
+                jobs: [
+                    'Define overall marketing strategy and positioning',
+                    'Build and manage the marketing team',
+                    'Own pipeline targets and marketing metrics',
+                    'Manage marketing budget and vendor relationships',
+                    'Partner with sales and product leadership'
+                ],
+                jd: `Head of Marketing / VP Marketing
+
+About the Role:
+We're looking for a strategic, hands-on marketing leader to build and scale our marketing function. As our first senior marketing hire, you'll define our go-to-market strategy, establish our brand positioning, and build a high-performing team.
+
+Responsibilities:
+- Develop and execute comprehensive marketing strategy aligned with business goals
+- Build, lead, and mentor a growing marketing team
+- Own pipeline generation targets and marketing-attributed revenue
+- Define brand positioning, messaging, and competitive differentiation
+- Manage marketing budget, tools, and vendor relationships
+- Partner closely with Sales, Product, and Customer Success
+- Establish marketing metrics, dashboards, and reporting cadence
+- Lead content strategy, demand generation, and brand initiatives
+
+Requirements:
+- 8+ years of B2B SaaS marketing experience
+- 3+ years in a leadership role building and managing teams
+- Proven track record of driving pipeline and revenue growth
+- Experience across multiple marketing disciplines (demand gen, content, product marketing)
+- Strong analytical skills and data-driven decision making
+- Excellent communication and cross-functional collaboration skills
+- Experience marketing to [your ICP] is a plus
+
+What We Offer:
+- Competitive salary and equity package
+- Opportunity to build marketing from the ground up
+- Direct impact on company growth trajectory
+- Collaborative, fast-paced startup environment`
+            },
+            'demand-gen': {
+                title: 'Demand Generation Manager',
+                shortTitle: 'Demand Gen',
+                description: 'Focuses on driving qualified leads and pipeline through paid, organic, and outbound channels.',
+                jobs: [
+                    'Manage paid advertising (Google, LinkedIn, etc.)',
+                    'Optimize conversion funnels and landing pages',
+                    'Run email nurture campaigns and sequences',
+                    'Track and improve marketing attribution',
+                    'Hit pipeline generation targets'
+                ],
+                jd: `Demand Generation Manager
+
+About the Role:
+We're looking for a data-driven Demand Generation Manager to own our pipeline generation engine. You'll be responsible for developing and executing campaigns that drive qualified leads and accelerate revenue growth.
+
+Responsibilities:
+- Plan, execute, and optimize multi-channel demand generation campaigns
+- Manage paid advertising budget across Google, LinkedIn, and other platforms
+- Build and optimize conversion funnels, landing pages, and lead capture
+- Develop and manage email nurture programs and marketing automation
+- Partner with Sales to ensure smooth lead handoff and follow-up
+- Track campaign performance and provide regular reporting on KPIs
+- Conduct A/B tests to continuously improve conversion rates
+- Manage marketing technology stack and integrations
+
+Requirements:
+- 4+ years of B2B demand generation experience
+- Proven track record of hitting pipeline and MQL targets
+- Expert in paid advertising platforms (Google Ads, LinkedIn Ads)
+- Strong experience with marketing automation (HubSpot, Marketo, etc.)
+- Analytical mindset with proficiency in Excel/Sheets and reporting tools
+- Experience with A/B testing and conversion rate optimization
+- Understanding of B2B buyer journeys and sales cycles
+
+What We Offer:
+- Competitive salary based on experience
+- Equity package
+- Growth opportunity in a scaling company
+- Collaborative team environment`
+            },
+            'pmm': {
+                title: 'Product Marketing Manager',
+                shortTitle: 'PMM',
+                description: 'Owns positioning, messaging, competitive intelligence, and sales enablement.',
+                jobs: [
+                    'Develop product positioning and messaging',
+                    'Create sales enablement materials',
+                    'Conduct competitive analysis and battlecards',
+                    'Lead product launches and GTM strategy',
+                    'Gather and synthesize customer insights'
+                ],
+                jd: `Product Marketing Manager
+
+About the Role:
+We're seeking a strategic Product Marketing Manager to own our positioning, messaging, and go-to-market strategy. You'll be the voice of the customer internally and ensure our value proposition resonates in the market.
+
+Responsibilities:
+- Develop and refine product positioning and messaging framework
+- Create compelling sales enablement materials (decks, one-pagers, battlecards)
+- Conduct competitive analysis and maintain competitive intelligence
+- Plan and execute product launches with cross-functional teams
+- Develop buyer personas and customer journey maps
+- Gather customer insights through interviews, surveys, and win/loss analysis
+- Partner with Sales to improve conversion and reduce sales cycle
+- Create customer-facing content (case studies, testimonials, videos)
+
+Requirements:
+- 4+ years of B2B product marketing experience, ideally in SaaS
+- Strong writing skills and ability to translate features into benefits
+- Experience creating sales enablement content and working closely with Sales
+- Analytical skills to measure launch effectiveness and adjust strategy
+- Ability to synthesize complex information into clear, compelling narratives
+- Experience with customer research and competitive intelligence
+- Cross-functional collaboration skills across Product, Sales, and Marketing
+
+What We Offer:
+- Competitive compensation package
+- Meaningful equity stake
+- High-impact role with visibility across the organization
+- Opportunity to shape how the market perceives our category`
+            },
+            'content': {
+                title: 'Content Marketing Manager',
+                shortTitle: 'Content',
+                description: 'Creates and manages blog posts, guides, case studies, and other content assets.',
+                jobs: [
+                    'Develop content strategy and editorial calendar',
+                    'Write blog posts, guides, and thought leadership',
+                    'Create case studies and customer stories',
+                    'Optimize content for SEO and organic traffic',
+                    'Manage freelancers and content operations'
+                ],
+                jd: `Content Marketing Manager
+
+About the Role:
+We're looking for a talented Content Marketing Manager to build and execute our content strategy. You'll create compelling content that educates our audience, drives organic traffic, and supports the full buyer journey.
+
+Responsibilities:
+- Develop and own the content strategy and editorial calendar
+- Write high-quality blog posts, guides, ebooks, and thought leadership pieces
+- Create case studies and customer success stories
+- Optimize all content for SEO and organic search visibility
+- Manage content distribution across channels (social, email, syndication)
+- Collaborate with Product Marketing on messaging and positioning
+- Manage freelance writers and content contributors as needed
+- Track content performance and report on key metrics
+
+Requirements:
+- 3+ years of B2B content marketing experience
+- Exceptional writing and editing skills
+- Strong understanding of SEO best practices and keyword research
+- Experience with content management systems and marketing tools
+- Ability to translate complex technical topics into accessible content
+- Data-driven approach to content strategy and optimization
+- Self-starter who can manage multiple projects independently
+- Portfolio of B2B writing samples required
+
+What We Offer:
+- Competitive salary
+- Equity participation
+- Remote-friendly environment
+- Creative freedom and autonomy`
+            },
+            'marketing-ops': {
+                title: 'Marketing Operations Manager',
+                shortTitle: 'Mkt Ops',
+                description: 'Manages marketing tech stack, data, reporting, and process automation.',
+                jobs: [
+                    'Own and optimize marketing technology stack',
+                    'Build dashboards and attribution reporting',
+                    'Manage lead routing and scoring',
+                    'Ensure data quality and CRM hygiene',
+                    'Automate marketing workflows and processes'
+                ],
+                jd: `Marketing Operations Manager
+
+About the Role:
+We're seeking a Marketing Operations Manager to own our marketing technology stack, data infrastructure, and reporting. You'll be the backbone of our marketing team, ensuring data accuracy and operational efficiency.
+
+Responsibilities:
+- Own and optimize the marketing technology stack (CRM, MAP, analytics)
+- Build and maintain marketing dashboards and performance reporting
+- Develop and refine lead scoring and routing processes
+- Ensure data quality, hygiene, and integration across systems
+- Manage marketing automation workflows and campaign operations
+- Support campaign execution and troubleshoot technical issues
+- Partner with Sales Ops on funnel metrics and attribution
+- Document processes and train team on marketing tools
+
+Requirements:
+- 4+ years of marketing operations experience in B2B SaaS
+- Expert-level proficiency in HubSpot, Marketo, or Salesforce Marketing Cloud
+- Strong CRM skills (Salesforce preferred)
+- Experience with attribution models and marketing analytics
+- SQL skills or experience with BI tools (Looker, Tableau, etc.)
+- Detail-oriented with strong project management abilities
+- Problem-solving mindset and ability to troubleshoot technical issues
+- Experience managing integrations between marketing and sales tools
+
+What We Offer:
+- Competitive compensation
+- Equity package
+- Opportunity to build best-in-class marketing infrastructure
+- Collaborative cross-functional environment`
+            },
+            'events': {
+                title: 'Events & Field Marketing Manager',
+                shortTitle: 'Events',
+                description: 'Plans and executes conferences, webinars, and regional events.',
+                jobs: [
+                    'Plan and execute industry conferences and trade shows',
+                    'Organize webinars and virtual events',
+                    'Manage event budgets and vendor relationships',
+                    'Coordinate regional field marketing programs',
+                    'Track event ROI and pipeline influence'
+                ],
+                jd: `Events & Field Marketing Manager
+
+About the Role:
+We're looking for an Events & Field Marketing Manager to plan and execute our conference, webinar, and field marketing programs. You'll create memorable experiences that generate pipeline and strengthen customer relationships.
+
+Responsibilities:
+- Plan and execute presence at industry conferences and trade shows
+- Organize and promote webinars and virtual events
+- Develop regional field marketing programs and executive dinners
+- Manage event budgets and negotiate vendor contracts
+- Coordinate event logistics, staffing, and follow-up processes
+- Create event promotion strategies with demand gen team
+- Track and report on event ROI and pipeline attribution
+- Build relationships with industry associations and partners
+
+Requirements:
+- 3+ years of B2B event marketing experience
+- Proven track record of executing successful conferences and events
+- Strong project management and organizational skills
+- Experience managing event budgets and vendor relationships
+- Excellent communication and stakeholder management abilities
+- Detail-oriented with ability to manage multiple events simultaneously
+- Experience with event technology platforms
+- Willingness to travel for events (estimated 25-30%)
+
+What We Offer:
+- Competitive salary
+- Equity stake
+- Travel opportunities
+- Creative freedom in building event programs`
+            },
+            'growth': {
+                title: 'Growth Marketing Manager',
+                shortTitle: 'Growth',
+                description: 'Focuses on activation, conversion, and product-led growth initiatives.',
+                jobs: [
+                    'Optimize user onboarding and activation flows',
+                    'Run experiments to improve conversion rates',
+                    'Manage PLG acquisition channels',
+                    'Analyze user behavior and funnel metrics',
+                    'Partner with Product on growth features'
+                ],
+                jd: `Growth Marketing Manager
+
+About the Role:
+We're seeking a Growth Marketing Manager to drive our product-led growth initiatives. You'll own the full user journey from acquisition through activation and conversion, running experiments to optimize every step.
+
+Responsibilities:
+- Own user acquisition, activation, and conversion metrics
+- Design and run A/B tests and growth experiments
+- Optimize onboarding flows to improve time-to-value
+- Manage self-serve acquisition channels and funnels
+- Analyze user behavior data to identify growth opportunities
+- Partner with Product on growth-focused feature development
+- Build referral and viral loop programs
+- Develop lifecycle marketing campaigns for user segments
+
+Requirements:
+- 4+ years of growth marketing experience, preferably in PLG SaaS
+- Strong analytical skills with experience in Mixpanel, Amplitude, or similar
+- Proficiency in A/B testing and experimentation frameworks
+- Experience optimizing onboarding and activation flows
+- Understanding of product-led growth principles and metrics
+- SQL or data analysis skills
+- Cross-functional collaboration with Product and Engineering
+- Self-starter mentality with bias toward action
+
+What We Offer:
+- Competitive compensation
+- Meaningful equity
+- Direct impact on core business metrics
+- Experimentation culture with fast feedback loops`
+            },
+            'abm': {
+                title: 'ABM / Account-Based Marketing Manager',
+                shortTitle: 'ABM',
+                description: 'Runs targeted marketing programs for key accounts and enterprise prospects.',
+                jobs: [
+                    'Develop ABM strategy and target account lists',
+                    'Create personalized campaigns for key accounts',
+                    'Coordinate with Sales on account-specific plays',
+                    'Manage ABM technology and intent data',
+                    'Track account engagement and pipeline influence'
+                ],
+                jd: `Account-Based Marketing Manager
+
+About the Role:
+We're looking for an ABM Manager to design and execute targeted marketing programs for our most valuable accounts. You'll partner closely with Sales to create personalized campaigns that accelerate enterprise deals.
+
+Responsibilities:
+- Develop ABM strategy, tiers, and target account lists
+- Create personalized content and campaigns for priority accounts
+- Partner with Sales on account-specific plays and orchestration
+- Manage ABM technology stack (6sense, Demandbase, etc.)
+- Leverage intent data to prioritize and time outreach
+- Coordinate multi-channel campaigns (email, ads, direct mail, events)
+- Track account engagement scores and pipeline influence
+- Report on ABM program ROI and continuously optimize
+
+Requirements:
+- 4+ years of B2B marketing experience with 2+ years in ABM
+- Experience with ABM platforms (6sense, Demandbase, Terminus)
+- Strong understanding of enterprise sales cycles and buyer committees
+- Ability to create personalized content for target accounts
+- Analytical skills to measure and optimize ABM performance
+- Cross-functional collaboration with Sales and SDR teams
+- Experience with intent data and account prioritization
+- Creative thinker who can develop innovative account plays
+
+What We Offer:
+- Competitive salary and equity
+- Strategic role with high visibility
+- Partnership with executive sales team
+- Opportunity to build ABM function from scratch`
+            },
+            'field-marketing': {
+                title: 'Field Marketing Manager',
+                shortTitle: 'Field Mkt',
+                description: 'Executes regional marketing programs and supports local sales teams.',
+                jobs: [
+                    'Plan regional events and executive dinners',
+                    'Support local sales teams with marketing programs',
+                    'Execute partner marketing initiatives',
+                    'Manage regional marketing budgets',
+                    'Drive pipeline in assigned territories'
+                ],
+                jd: `Field Marketing Manager
+
+About the Role:
+We're seeking a Field Marketing Manager to drive regional marketing programs and support our sales teams in the field. You'll be the marketing partner for a region, creating localized programs that generate pipeline.
+
+Responsibilities:
+- Plan and execute regional events, executive dinners, and roadshows
+- Partner with regional sales leaders on territory marketing plans
+- Support local sales teams with campaigns and content
+- Execute partner marketing programs in your region
+- Manage regional marketing budget and track ROI
+- Coordinate with corporate marketing on campaign execution
+- Build relationships with regional industry groups and associations
+- Report on regional pipeline and marketing contribution
+
+Requirements:
+- 3+ years of field marketing experience in B2B
+- Proven track record of regional pipeline generation
+- Strong relationship building skills with sales teams
+- Event planning and execution experience
+- Budget management and vendor negotiation skills
+- Ability to work independently and travel within region
+- Excellent communication and presentation abilities
+- Data-driven approach to program measurement
+
+What We Offer:
+- Competitive compensation
+- Equity participation
+- Regional ownership and autonomy
+- Travel within assigned territory`
+            }
+        };
+
+        // ===== STATE MANAGEMENT =====
+        let currentScreen = 0;
+        let currentScenario = 'balanced';
+        let userInputs = {};
+
+        // ===== WIZARD NAVIGATION =====
+        function showScreen(screenIndex) {
+            document.querySelectorAll('.wizard-screen').forEach((screen, i) => {
+                screen.classList.toggle('active', i === screenIndex);
+            });
+            currentScreen = screenIndex;
+        }
+
+        function nextScreen() {
+            if (currentScreen === 3) {
+                // Collect inputs and show dashboard
+                collectInputs();
+                showDashboard();
+            } else {
+                showScreen(currentScreen + 1);
+            }
+        }
+
+        function prevScreen() {
+            if (currentScreen > 0) {
+                showScreen(currentScreen - 1);
+            }
+        }
+
+        function collectInputs() {
+            userInputs = {
+                acv: document.getElementById('acv').value || '10-50k',
+                funding: document.getElementById('funding').value || 'seriesA',
+                currentArr: document.getElementById('currentArr').value || '1-5m',
+                targetArr: document.getElementById('targetArr').value || '5-10m',
+                salesTeam: document.getElementById('salesTeam').value || '1-3',
+                gtmMotion: document.getElementById('gtmMotion').value || 'hybrid',
+                marketingTeam: document.getElementById('marketingTeam').value || '0',
+                biggestGap: document.getElementById('biggestGap').value || 'pipeline'
+            };
+
+            // Sync to dashboard inputs
+            document.getElementById('dash-acv').value = userInputs.acv;
+            document.getElementById('dash-funding').value = userInputs.funding;
+            document.getElementById('dash-gtm').value = userInputs.gtmMotion;
+            document.getElementById('dash-team').value = userInputs.marketingTeam;
+            document.getElementById('dash-gap').value = userInputs.biggestGap;
+        }
+
+        function showDashboard() {
+            document.getElementById('wizard').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            updateDashboard();
+        }
+
+        function restartWizard() {
+            document.getElementById('wizard').style.display = 'block';
+            document.getElementById('dashboard').classList.remove('active');
+            showScreen(0);
+        }
+
+        // ===== RECOMMENDATION ENGINE =====
+        function getRecommendedHires() {
+            const acv = document.getElementById('dash-acv').value;
+            const funding = document.getElementById('dash-funding').value;
+            const gtm = document.getElementById('dash-gtm').value;
+            const team = document.getElementById('dash-team').value;
+            const gap = document.getElementById('dash-gap').value;
+            const location = document.getElementById('location').value;
+
+            let hires = [];
+            let seniority = 'mid';
+
+            // Determine base seniority from funding stage
+            if (funding === 'seed') {
+                seniority = 'senior'; // Seed needs senior generalists
+            } else if (funding === 'seriesA') {
+                seniority = 'mid';
+            } else {
+                seniority = 'mid'; // Mix for Series B+
+            }
+
+            // If no marketing team, first hire is Head of Marketing
+            if (team === '0') {
+                hires.push({
+                    role: 'head-of-marketing',
+                    seniority: 'senior',
+                    timing: 'Now',
+                    monthOffset: 0
+                });
+            }
+
+            // Build hire list based on GTM motion and gaps
+            const rolesByGtm = {
+                'plg': ['growth', 'content', 'pmm', 'marketing-ops'],
+                'sales-smb': ['demand-gen', 'content', 'pmm', 'marketing-ops'],
+                'sales-enterprise': ['pmm', 'abm', 'events', 'field-marketing', 'content'],
+                'hybrid': ['pmm', 'demand-gen', 'content', 'growth', 'marketing-ops']
+            };
+
+            const gapToRole = {
+                'pipeline': gtm === 'plg' ? 'growth' : 'demand-gen',
+                'positioning': 'pmm',
+                'content': 'content',
+                'ops': 'marketing-ops',
+                'awareness': gtm === 'sales-enterprise' ? 'events' : 'content'
+            };
+
+            // Start with role that addresses the gap
+            const priorityRole = gapToRole[gap];
+            let orderedRoles = [priorityRole];
+
+            // Add remaining roles from GTM-specific list
+            const gtmRoles = rolesByGtm[gtm] || rolesByGtm['hybrid'];
+            gtmRoles.forEach(role => {
+                if (!orderedRoles.includes(role)) {
+                    orderedRoles.push(role);
+                }
+            });
+
+            // Adjust number of hires based on scenario and funding
+            let maxHires = {
+                'conservative': { seed: 2, seriesA: 3, seriesB: 4, 'seriesC+': 5 },
+                'balanced': { seed: 3, seriesA: 4, seriesB: 5, 'seriesC+': 6 },
+                'aggressive': { seed: 4, seriesA: 5, seriesB: 6, 'seriesC+': 7 }
+            };
+
+            const numHires = maxHires[currentScenario][funding] || 4;
+
+            // If we already added Head of Marketing, account for that
+            const remainingSlots = team === '0' ? numHires - 1 : numHires;
+
+            // Timing offsets based on scenario
+            const timingOffsets = {
+                'conservative': [0, 4, 8, 10, 12],
+                'balanced': [0, 3, 6, 9, 11],
+                'aggressive': [0, 2, 4, 6, 8]
+            };
+
+            const offsets = timingOffsets[currentScenario];
+
+            // Add the recommended roles
+            orderedRoles.slice(0, remainingSlots).forEach((role, index) => {
+                const offsetIndex = team === '0' ? index + 1 : index;
+                const monthOffset = offsets[offsetIndex] || offsets[offsets.length - 1];
+
+                // Adjust seniority based on role and stage
+                let roleSeniority = seniority;
+                if (funding === 'seed' && index === 0) {
+                    roleSeniority = 'senior';
+                } else if (funding === 'seriesC+') {
+                    roleSeniority = index < 2 ? 'senior' : 'mid';
+                }
+
+                hires.push({
+                    role: role,
+                    seniority: roleSeniority,
+                    timing: monthOffset === 0 ? 'Now' : `+${monthOffset}mo`,
+                    monthOffset: monthOffset
+                });
+            });
+
+            return hires;
+        }
+
+        function getSalary(role, seniority, location) {
+            const roleData = salaryData[role];
+            if (!roleData) return 0;
+
+            const seniorityData = roleData[seniority];
+            if (!seniorityData) {
+                // Fall back to mid if seniority not found
+                return roleData['mid'] ? roleData['mid'][location] || 0 : 0;
+            }
+
+            return seniorityData[location] || 0;
+        }
+
+        function formatSalary(amount, location) {
+            if (location === 'europe') {
+                return '€' + Math.round(amount / 1000) + 'K';
+            }
+            return '$' + Math.round(amount / 1000) + 'K';
+        }
+
+        function formatSalaryFull(amount, location) {
+            if (location === 'europe') {
+                return '€' + amount.toLocaleString();
+            }
+            return '$' + amount.toLocaleString();
+        }
+
+        // ===== DASHBOARD RENDERING =====
+        function updateDashboard() {
+            const location = document.getElementById('location').value;
+            const hires = getRecommendedHires();
+
+            renderTimeline(hires, location);
+            renderRoleCards(hires, location);
+            renderBudget(hires, location);
+            renderComparison(location);
+        }
+
+        function renderTimeline(hires, location) {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+
+            hires.forEach((hire, index) => {
+                const salary = getSalary(hire.role, hire.seniority, location);
+                const info = roleInfo[hire.role];
+
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.onclick = () => expandRoleCard(index);
+                item.innerHTML = `
+                    <div class="timeline-marker ${hire.monthOffset > 0 ? 'future' : ''}"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-role">${info ? info.shortTitle : hire.role}</div>
+                        <div class="timeline-salary">${formatSalary(salary, location)}</div>
+                        <div class="timeline-time">${hire.timing}</div>
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+        }
+
+        function renderRoleCards(hires, location) {
+            const container = document.getElementById('roleCards');
+            container.innerHTML = '';
+
+            hires.forEach((hire, index) => {
+                const salary = getSalary(hire.role, hire.seniority, location);
+                const info = roleInfo[hire.role];
+                if (!info) return;
+
+                const seniorityLabel = hire.seniority.charAt(0).toUpperCase() + hire.seniority.slice(1);
+
+                // Generate why this role matters
+                const whyText = generateWhyText(hire.role, location);
+
+                const card = document.createElement('div');
+                card.className = 'role-card';
+                card.id = `role-card-${index}`;
+                card.innerHTML = `
+                    <div class="role-card-header" onclick="toggleRoleCard(${index})">
+                        <div class="role-card-info">
+                            <div class="role-number">${index + 1}</div>
+                            <div>
+                                <div class="role-title">${info.title}</div>
+                                <div class="role-seniority">${seniorityLabel} • ${hire.timing}</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="role-salary-badge">${formatSalary(salary, location)}</div>
+                            <svg class="role-card-expand" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="role-card-body">
+                        <div class="role-section">
+                            <div class="role-section-title">Why This Role for You</div>
+                            <div class="role-why">${whyText}</div>
+                        </div>
+                        <div class="role-section">
+                            <div class="role-section-title">Top 5 Jobs to Be Done</div>
+                            <ul class="jobs-list">
+                                ${info.jobs.map(job => `<li>${job}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="role-section">
+                            <div class="role-section-title">Sample Job Description</div>
+                            <div class="jd-container">${info.jd}</div>
+                            <button class="btn btn-outline copy-btn" onclick="copyJD('${hire.role}')">
+                                Copy Job Description
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function generateWhyText(role, location) {
+            const gtm = document.getElementById('dash-gtm').value;
+            const gap = document.getElementById('dash-gap').value;
+            const funding = document.getElementById('dash-funding').value;
+
+            const texts = {
+                'head-of-marketing': `As a ${funding} company without a marketing team, you need a senior marketing leader who can build the function from scratch. This person will set strategy, make initial hires, and be accountable for pipeline targets.`,
+                'demand-gen': `Your focus on ${gap === 'pipeline' ? 'pipeline generation' : 'growth'} means you need someone who can build and scale your lead generation engine. A Demand Gen manager will own your paid channels, optimize conversions, and hit pipeline targets.`,
+                'pmm': `${gap === 'positioning' ? 'Your positioning gap' : 'Your GTM motion'} requires strong product marketing. A PMM will clarify your messaging, arm sales with better materials, and ensure your value prop resonates with buyers.`,
+                'content': `${gtm === 'plg' ? 'Product-led growth' : 'Your sales motion'} requires a steady stream of content to educate prospects and build trust. A content marketer will build your SEO foundation, create thought leadership, and fuel your nurture programs.`,
+                'marketing-ops': `As you scale, your marketing tech stack and data become increasingly complex. A Marketing Ops person will ensure clean data, proper attribution, and automated workflows that save time and improve accuracy.`,
+                'events': `${gtm === 'sales-enterprise' ? 'Enterprise sales' : 'Your GTM strategy'} benefits significantly from face-to-face interactions. An Events manager will create high-touch experiences that build relationships and accelerate deals.`,
+                'growth': `Your product-led motion needs someone laser-focused on activation and conversion. A Growth marketer will run experiments, optimize onboarding, and improve the self-serve funnel.`,
+                'abm': `Enterprise deals require personalized, account-specific marketing. An ABM manager will create targeted programs for your top accounts and work closely with Sales on coordinated outreach.`,
+                'field-marketing': `Regional sales teams need local marketing support. A Field marketer will execute regional events, partner programs, and territory-specific campaigns that drive pipeline.`
+            };
+
+            return texts[role] || `This role addresses your current needs and aligns with your ${gtm} go-to-market strategy.`;
+        }
+
+        function toggleRoleCard(index) {
+            const card = document.getElementById(`role-card-${index}`);
+            card.classList.toggle('expanded');
+        }
+
+        function expandRoleCard(index) {
+            // Collapse all cards first
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('expanded');
+            });
+            // Expand the clicked one
+            const card = document.getElementById(`role-card-${index}`);
+            if (card) {
+                card.classList.add('expanded');
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function renderBudget(hires, location) {
+            const table = document.getElementById('budgetTable');
+            let totalSalary = 0;
+
+            let html = `
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Seniority</th>
+                        <th>Timing</th>
+                        <th class="budget-amount">Annual Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+
+            hires.forEach(hire => {
+                const salary = getSalary(hire.role, hire.seniority, location);
+                const info = roleInfo[hire.role];
+                totalSalary += salary;
+
+                const seniorityLabel = hire.seniority.charAt(0).toUpperCase() + hire.seniority.slice(1);
+
+                html += `
+                    <tr>
+                        <td>${info ? info.title : hire.role}</td>
+                        <td>${seniorityLabel}</td>
+                        <td>${hire.timing}</td>
+                        <td class="budget-amount">${formatSalaryFull(salary, location)}</td>
+                    </tr>
+                `;
+            });
+
+            const benefits = Math.round(totalSalary * 0.25);
+            const tools = hires.length * 2000;
+            const total = totalSalary + benefits + tools;
+
+            html += `
+                    <tr class="subtotal-row">
+                        <td colspan="3">Total Salaries</td>
+                        <td class="budget-amount">${formatSalaryFull(totalSalary, location)}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Benefits & Taxes (~25%)</td>
+                        <td class="budget-amount">${formatSalaryFull(benefits, location)}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Tools & Software (~$2K/person)</td>
+                        <td class="budget-amount">${formatSalaryFull(tools, location)}</td>
+                    </tr>
+                    <tr class="grand-total">
+                        <td colspan="3"><strong>Total Year 1 Investment</strong></td>
+                        <td class="budget-amount"><strong>${formatSalaryFull(total, location)}</strong></td>
+                    </tr>
+                </tbody>
+            `;
+
+            table.innerHTML = html;
+        }
+
+        function renderComparison(location) {
+            const container = document.getElementById('comparisonGrid');
+            const scenarios = ['conservative', 'balanced', 'aggressive'];
+
+            const previousScenario = currentScenario;
+            let html = '';
+
+            scenarios.forEach(scenario => {
+                currentScenario = scenario;
+                const hires = getRecommendedHires();
+
+                let totalCost = 0;
+                hires.forEach(hire => {
+                    const salary = getSalary(hire.role, hire.seniority, location);
+                    totalCost += salary;
+                });
+                totalCost = totalCost * 1.25 + (hires.length * 2000); // Add benefits and tools
+
+                const labels = {
+                    'conservative': { title: 'Conservative', subtitle: 'Lower risk, slower growth' },
+                    'balanced': { title: 'Balanced', subtitle: 'Recommended path' },
+                    'aggressive': { title: 'Aggressive', subtitle: 'Faster scaling, higher investment' }
+                };
+
+                html += `
+                    <div class="comparison-card ${scenario === previousScenario ? 'active' : ''}"
+                         onclick="setScenario('${scenario}')">
+                        <div class="comparison-title">${labels[scenario].title}</div>
+                        <div class="comparison-subtitle">${labels[scenario].subtitle}</div>
+                        <div class="comparison-stat">
+                            <div class="comparison-stat-value">${hires.length}</div>
+                            <div class="comparison-stat-label">Hires in 12 months</div>
+                        </div>
+                        <div class="comparison-stat">
+                            <div class="comparison-stat-value">${formatSalary(totalCost, location)}</div>
+                            <div class="comparison-stat-label">Total investment</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            currentScenario = previousScenario;
+            container.innerHTML = html;
+        }
+
+        function setScenario(scenario) {
+            currentScenario = scenario;
+
+            // Update toggle buttons
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.scenario === scenario);
+            });
+
+            updateDashboard();
+        }
+
+        // Initialize scenario toggle listeners
+        document.querySelectorAll('.scenario-btn').forEach(btn => {
+            btn.addEventListener('click', () => setScenario(btn.dataset.scenario));
+        });
+
+        // ===== EXPORT FUNCTIONS =====
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function exportPDF() {
+            // Expand all role cards for printing
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.add('expanded');
+            });
+
+            window.print();
+
+            showToast('Use your browser\'s print dialog to save as PDF');
+        }
+
+        function exportCSV() {
+            const location = document.getElementById('location').value;
+            const hires = getRecommendedHires();
+
+            let csv = 'Role,Seniority,Timing,Annual Salary\n';
+
+            let totalSalary = 0;
+            hires.forEach(hire => {
+                const salary = getSalary(hire.role, hire.seniority, location);
+                const info = roleInfo[hire.role];
+                totalSalary += salary;
+                csv += `"${info ? info.title : hire.role}",${hire.seniority},${hire.timing},${salary}\n`;
+            });
+
+            const benefits = Math.round(totalSalary * 0.25);
+            const tools = hires.length * 2000;
+            const total = totalSalary + benefits + tools;
+
+            csv += `\nTotal Salaries,,,${totalSalary}\n`;
+            csv += `Benefits & Taxes (25%),,,${benefits}\n`;
+            csv += `Tools & Software,,,${tools}\n`;
+            csv += `TOTAL YEAR 1,,,${total}\n`;
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'marketing-hiring-budget.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            showToast('Budget CSV downloaded!');
+        }
+
+        function copyJD(role) {
+            const info = roleInfo[role];
+            if (info && info.jd) {
+                navigator.clipboard.writeText(info.jd).then(() => {
+                    showToast('Job description copied to clipboard!');
+                });
+            }
+        }
+
+        function copyAllJDs() {
+            const hires = getRecommendedHires();
+            let allJDs = '';
+
+            hires.forEach((hire, index) => {
+                const info = roleInfo[hire.role];
+                if (info && info.jd) {
+                    allJDs += `=== HIRE #${index + 1}: ${info.title.toUpperCase()} ===\n\n`;
+                    allJDs += info.jd + '\n\n\n';
+                }
+            });
+
+            navigator.clipboard.writeText(allJDs).then(() => {
+                showToast('All job descriptions copied to clipboard!');
+            });
+        }
+
+        // ===== LOCAL STORAGE =====
+        function saveProgress() {
+            const data = {
+                userInputs: userInputs,
+                currentScenario: currentScenario,
+                location: document.getElementById('location').value
+            };
+            localStorage.setItem('marketingHiringPlanner', JSON.stringify(data));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('marketingHiringPlanner');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    userInputs = data.userInputs || {};
+                    currentScenario = data.currentScenario || 'balanced';
+
+                    // Restore values if they exist
+                    if (data.location) {
+                        document.getElementById('location').value = data.location;
+                    }
+
+                    // Set scenario button
+                    document.querySelectorAll('.scenario-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.scenario === currentScenario);
+                    });
+                } catch (e) {
+                    console.error('Error loading saved progress:', e);
+                }
+            }
+        }
+
+        // Auto-save on changes
+        document.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', () => {
+                setTimeout(saveProgress, 100);
+            });
+        });
+
+        // Load on page load
+        loadProgress();
+    </script>
+</body>
+</html>
